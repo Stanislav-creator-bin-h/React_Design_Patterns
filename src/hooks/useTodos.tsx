@@ -24,7 +24,7 @@ const useTodos = (): UseTodosReturn => {
  useEffect(() => {
   const fetchTodos = async () => {
    try {
-    const response = await fetch('https://dummyjson.com/todos?limit'); 
+    const response = await fetch('https://dummyjson.com/todos?limit10'); 
     if (!response.ok) {
      throw new Error('Network response was not ok');
     }
