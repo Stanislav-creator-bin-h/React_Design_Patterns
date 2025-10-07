@@ -23,21 +23,26 @@ const useTodos = (): UseTodosReturn => {
 
  useEffect(() => {
   const fetchTodos = async () => {
-   try {
-    const response = await fetch('https://dummyjson.com/todos?limit10'); 
-    if (!response.ok) {
-     throw new Error('Network response was not ok');
+    try {
+      const response = await fetch('https://dummyjson.com/todos?limit=10'); 
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      setTodos(data.todos);
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error occurred during fetching.'); 
+      
+    } finally {
+      setIsLoading(false);
     }
-    const data = await response.json();
-    setTodos(data.todos);
-   } catch (err) {
-    setError(err instanceof Error ? err.message : 'Unknown error'); 
-   } finally {
-    setIsLoading(false);
-   }
   };
+  
   fetchTodos();
- }, []);
+}, []);
 
  const addTodo = async (text: string) => {
   const newTodo: Todo = {
