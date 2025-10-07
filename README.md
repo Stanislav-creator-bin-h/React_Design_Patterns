@@ -17,26 +17,6 @@ CRUD Операції з API: Додавання, перемикання ста�
 
 🌳 Схема Компонентів та Потік Даних (Component Tree + Data Flow)
 Ця діаграма відображає, як кастомний хук стає єдиним джерелом даних та функціональності, повністю звільняючи компоненти від логіки Fetching.
-``` 
-App.tsx
-│
-└── TodoList.tsx
-      │ 
-      │ (TodoList споживає всі дані та колбеки, але не містить основного стану)
-      │
-      ├── (useTodos Hook)
-      │     (Містить Стан: todos, isLoading, error)
-      │     (Містить Функції: addTodo, deleteTodo, toggleTodo)
-      │     (Виконує Fetch API: GET, POST, PUT, DELETE)
-      │
-      ├── AddTodoForm.tsx
-      │     (Локальний Стан: newTodo)
-      │     ↑ onAddTodo(text: string)
-      │ 
-      └── TodoItem.tsx
-            │  (Props: todo {id, text, completed}, onToggleComplete, onDeleteTodo)
-            │  (Локальний Стан: isEditing: boolean)
-            │ 
-            ├── [Checkbox] onChange -> onToggleComplete(id)
-            └── [Delete Button] onClick -> onDeleteTodo(id)
-```
+
+
+<img width="1281" height="661" alt="Screenshot 2025-10-07 164200" src="https://github.com/user-attachments/assets/cc3337e7-3883-49f7-b905-fb0a6b1faadf" />
