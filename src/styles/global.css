@@ -1,26 +1,36 @@
+:root {
+  --primary-color: #00d2ff;
+  --secondary-color: #3a7bd5;
+  --accent-color: #6c5ce7;
+  --danger-color: #ff4757;
+  --text-color: #1e272e;
+  --muted-text: #7f8c8d;
+  --background: rgba(255, 255, 255, 0.9);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
 body {
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, #f5f7fa, #d1e8ff);
   min-height: 100vh;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #1e272e;
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  backdrop-filter: blur(5px);
 }
 
 main {
   max-width: 600px;
   width: 100%;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--background);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 h1 {
@@ -48,9 +58,9 @@ input[type="text"] {
   border: none;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   font-size: 1rem;
-  color: #1e272e;
+  color: var(--text-color);
   transition: box-shadow 0.3s ease, transform 0.2s ease, background 0.3s ease;
 }
 
@@ -61,9 +71,14 @@ input[type="text"]:focus {
   background: rgba(255, 255, 255, 1);
 }
 
+input[type="text"][placeholder="Search todos..."] {
+  margin-bottom: 15px;
+  border: 1px solid rgba(224, 231, 240, 0.5);
+}
+
 button[type="submit"] {
   padding: 12px 20px;
-  background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
   color: white;
   border: none;
   border-radius: 8px;
@@ -95,26 +110,21 @@ li {
   justify-content: space-between;
   padding: 12px 15px;
   margin-bottom: 10px;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--background);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease, transform 0.2s ease;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, background 0.3s ease;
   animation: slideIn 0.4s ease-out;
 }
 
-
-.completed {
-  text-decoration: line-through;
-  color: #888;
+li:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 1);
 }
 
-li.completed {
-  background: rgba(241, 245, 249, 0.7);
-}
-
-li.completed span {
+.completed span {
   text-decoration: line-through;
-  color: #7f8c8d;
+  color: var(--muted-text);
   opacity: 0.8;
 }
 
@@ -123,7 +133,7 @@ input[type="checkbox"] {
   cursor: pointer;
   transform: scale(1.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  accent-color: #00d2ff;
+  accent-color: var(--primary-color);
 }
 
 input[type="checkbox"]:checked {
@@ -134,17 +144,15 @@ input[type="checkbox"]:checked {
 span {
   flex: 1;
   font-size: 1.1rem;
-  color: #1e272e;
-  cursor: pointer;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 span:hover {
-  color: #00d2ff;
-  text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+  color: var(--primary-color);
 }
 
-input[type="text"][value] {
+.todo-edit-input {
   flex: 1;
   padding: 8px 12px;
   border: 1px solid rgba(224, 231, 240, 0.5);
@@ -154,15 +162,15 @@ input[type="text"][value] {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="text"][value]:focus {
+.todo-edit-input:focus {
   outline: none;
-  border-color: #00d2ff;
+  border-color: var(--primary-color);
   box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
 }
 
 button {
   padding: 8px 15px;
-  background: #ff4757;
+  background: var(--danger-color);
   color: white;
   border: none;
   border-radius: 6px;
@@ -182,24 +190,72 @@ button:active {
   box-shadow: 0 0 5px rgba(255, 71, 87, 0.2);
 }
 
-button:where([onClick="handleSave"], [onClick="handleEdit"]) {
-  background: #6c5ce7;
-  margin-right: 10px;
+button.edit-btn,
+button.save-btn {
+  background: var(--accent-color);
   box-shadow: 0 2px 10px rgba(108, 92, 231, 0.3);
 }
 
-button:where([onClick="handleSave"], [onClick="handleEdit"]):hover {
+button.edit-btn:hover,
+button.save-btn:hover {
   background: #5d4ec3;
   box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 210, 255, 0.3);
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: linear-gradient(45deg, #00b4d8, #2a6fd6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+}
+
+.pagination select {
+  padding: 10px;
+  border: 1px solid rgba(224, 231, 240, 0.5);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--background);
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pagination select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
+}
+
 p {
   text-align: center;
-  color: #7f8c8d;
+  color: var(--muted-text);
   font-style: italic;
   margin-top: 20px;
   opacity: 0.9;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {
@@ -218,9 +274,38 @@ p {
 }
 
 @media (max-width: 480px) {
-  main { padding: 10px; }
-  form { flex-direction: column; }
-  input[type="text"], button[type="submit"] { width: 100%; }
-  li { flex-direction: column; align-items: flex-start; gap: 10px; }
-  button { width: 100%; margin-top: 5px; }
+  main {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  input[type="text"],
+  button[type="submit"],
+  .pagination select {
+    width: 100%;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  li button,
+  .pagination button {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

@@ -1,72 +1,82 @@
-import type React from "react"
-import { useState } from "react"
+import type React from 'react';
+import { useState } from 'react';
 
 interface Todo {
- id: number
- text: string
- completed: boolean
+  id: number;
+  todo: string;
+  completed: boolean;
 }
 
 interface TodoItemProps {
- todo: Todo
- onToggleComplete: (id: number) => Promise<void> | void
- onDeleteTodo: (id: number) => Promise<void> | void
- onEditTodo?: (id: number, newText: string) => void
+  todo: Todo;
+  onToggleComplete: (id: number) => Promise<void>;
+  onDeleteTodo: (id: number) => Promise<void>;
+  onEditTodo: (id: number, newTitle: string) => Promise<void>;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggleComplete, onDeleteTodo, onEditTodo }) => {
- const [isEditing, setIsEditing] = useState(false)
- const [editedText, setEditedText] = useState(todo.text)
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(todo.todo);
 
- const handleSave = () => {
-  if (onEditTodo) {
-   onEditTodo(todo.id, editedText)
-  }
-  setIsEditing(false)
- }
+  const handleSave = async () => {
+    if (editedText.trim()) {
+      await onEditTodo(todo.id, editedText);
+      setIsEditing(false);
+    }
+  };
 
- const handleEdit = () => {
-  setIsEditing(true)
- }
+  const itemClassName = todo.completed ? 'completed' : '';
 
- const itemClassName = todo.completed ? "completed" : "";
-  
- return (
-  <li className={itemClassName}>
-   <input
-    type="checkbox"
-    checked={todo.completed}
-    onChange={() => onToggleComplete(todo.id)}
-   />
+  return (
+    <li className={itemClassName}>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggleComplete(todo.id)}
+        aria-label={`Toggle completion for ${todo.todo}`}
+      />
+      {isEditing ? (
+        <input
+          type="text"
+          className="todo-edit-input"
+          value={editedText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedText(e.target.value)}
+          onBlur={handleSave}
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+              handleSave();
+            }
+          }}
+          autoFocus
+          aria-label={`Edit ${todo.todo}`}
+        />
+      ) : (
+        <span>{todo.todo}</span>
+      )}
+      <div>
+        {isEditing ? (
+          <button className="save-btn" onClick={handleSave} aria-label="Save todo">
+            Save
+          </button>
+        ) : (
+          <button
+            className="edit-btn"
+            onClick={() => setIsEditing(true)}
+            aria-label={`Edit ${todo.todo}`}
+          >
+            Edit
+          </button>
+        )}
+        <button
+          className="delete-btn"
+          onClick={() => onDeleteTodo(todo.id)}
+          aria-label={`Delete ${todo.todo}`}
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  );
+};
 
-   {isEditing ? (
-    <input
-     type="text"
-     value={editedText}
-     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedText(e.target.value)}
-     onBlur={handleSave}
-     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-       handleSave()
-      }
-     }}
-     autoFocus
-    />
-   ) : (
-    <span>{todo.text}</span>
-   )}
-
-   <div>
-    {onEditTodo &&
-     (isEditing ? (
-      <button onClick={handleSave}>Save</button>
-     ) : (
-      <button onClick={handleEdit}>Edit</button>
-     ))}
-    <button onClick={() => onDeleteTodo(todo.id)}>Delete</button>
-   </div>
-  </li>
- )
-}
-
-export default TodoItem
+export default TodoItem;
