@@ -15,7 +15,7 @@
 - **Обробка Станів**: Відображення станів завантаження (`isLoading`) та помилок (`error`).
 - **Типізація**: Використання TypeScript для чіткої типізації пропсів, стану та інтерфейсів.
 
-<img width="445" height="701" alt="Диаграмма без названия drawio" src="https://github.com/user-attachments/assets/260f845b-92ef-4370-905f-4dd31d9bdb7a" />
+<img width="445" height="701" alt="Диаграмма без названия drawio (1)" src="https://github.com/user-attachments/assets/07e776b5-d5e1-42c9-96bd-6d6212a4658a" />
 
 
 
